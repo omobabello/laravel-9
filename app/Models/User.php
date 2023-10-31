@@ -57,7 +57,7 @@ class User extends Authenticatable
     protected static function booted()
     {
         parent::booted();
-        static::creating(function(self $model){
+        static::creating(function (self $model) {
             // dummy representation of API tokens
             $model->api_token = md5($model->id);
         });
@@ -76,7 +76,7 @@ class User extends Authenticatable
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => Hash::make($value)
+            set: fn($value) => Hash::make($value)
         );
     }
 
@@ -96,5 +96,10 @@ class User extends Authenticatable
         }
 
         return $greeting;
+    }
+
+    public function getRedisKey()
+    {
+        return "redis-store-{$this->id}";
     }
 }

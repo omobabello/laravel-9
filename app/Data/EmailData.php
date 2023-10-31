@@ -2,11 +2,30 @@
 
 namespace App\Data;
 
+use App\Traits\DTOToArray;
+
 final class EmailData
 {
+    use DTOToArray;
+
     private string $emailAddress;
     private string $body;
     private string $subject;
+    private string $id;
+
+    public function __construct()
+    {
+        $this->id = uniqid();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
 
     /**
      * @return string

@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendEmailJob implements ShouldQueue
@@ -37,7 +38,10 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle(ElasticsearchHelperInterface $elasticsearchHelper, RedisHelperInterface $redisHelper)
     {
-        Mail::to($this->email->getEmailAddress())
-            ->queue(new CustomMail($this->email));
+        Mail::to($this->email->getEmailAddress())->send(new CustomMail($this->email));
+
+        $elasticsearchHelper->storeEmail($this->user, $this->email);
+
+        $redisHelper->storeRecentMessage($this->user, $this->email);
     }
 }
