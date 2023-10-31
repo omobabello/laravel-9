@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Data\EmailData;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 class CustomMail extends Mailable
 {
     use Queueable, SerializesModels;
-
 
     public function __construct(private EmailData $data)
     {
@@ -43,7 +41,7 @@ class CustomMail extends Mailable
         return new Content(
             view: 'emails.custom_mail',
             with: [
-                'body' => $this->data->getBody()
+                'body' => $this->data->getBody(),
             ]
         );
     }

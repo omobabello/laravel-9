@@ -5,7 +5,8 @@ namespace App\Utilities\Contracts;
 use App\Data\EmailData;
 use App\Models\User;
 
-interface ElasticsearchHelperInterface {
+interface ElasticsearchHelperInterface
+{
     /**
      * Store the email's message body, subject and to address inside elasticsearch.
      *
@@ -16,7 +17,6 @@ interface ElasticsearchHelperInterface {
     public function storeEmail(EmailData $data): mixed;
 
     public function get();
-
 
     public function getIndex(): string;
 

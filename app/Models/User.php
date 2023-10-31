@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Jobs\MotivateUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
 
-use App\Jobs\MotivateUser;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -44,7 +43,7 @@ class User extends Authenticatable
      */
     protected $dates = [
         'email_verified_at',
-        'last_email_sent_at'
+        'last_email_sent_at',
     ];
 
     /**
@@ -64,7 +63,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Motivate the user
+     * Motivate the user.
      *
      * @return void
      */
@@ -76,7 +75,7 @@ class User extends Authenticatable
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => Hash::make($value)
+            set: fn ($value) => Hash::make($value)
         );
     }
 
@@ -87,12 +86,12 @@ class User extends Authenticatable
      * @param string $salutation
      * @return string
      */
-    public function getGreeting(bool $smallTalk = true, string $salutation): string
+    public function getGreeting(bool $smallTalk, string $salutation): string
     {
         $greeting = "$salutation, {$this->name}!";
 
         if ($smallTalk) {
-            $greeting .= " Lovely weather we are having!";
+            $greeting .= ' Lovely weather we are having!';
         }
 
         return $greeting;

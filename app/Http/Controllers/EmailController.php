@@ -3,25 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SendEmailRequest;
-use App\Jobs\SendEmailJob;
 use App\Models\User;
 use App\Repositories\Contracts\EmailRepositoryInterface;
-use App\Utilities\Contracts\ElasticsearchHelperInterface;
-use App\Utilities\Contracts\RedisHelperInterface;
 use Illuminate\Http\Response;
 
 class EmailController extends Controller
 {
     public function __construct(private EmailRepositoryInterface $emailRepository)
     {
-
     }
 
     public function send(User $user, SendEmailRequest $request)
     {
         $emailsToSend = $request->emails();
 
-        $emailsToSend->each(function($email) use ($user) {
+        $emailsToSend->each(function ($email) use ($user) {
             $this->emailRepository->sendEmail($user, $email);
         });
 

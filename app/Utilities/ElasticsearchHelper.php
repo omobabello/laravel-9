@@ -3,7 +3,6 @@
 namespace App\Utilities;
 
 use App\Data\EmailData;
-use App\Models\User;
 use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use Elasticsearch\Client;
 
@@ -11,7 +10,6 @@ class ElasticsearchHelper implements ElasticsearchHelperInterface
 {
     public function __construct(private Client $client)
     {
-
     }
 
     public function storeEmail(EmailData $data): mixed
@@ -20,7 +18,7 @@ class ElasticsearchHelper implements ElasticsearchHelperInterface
             'index' => $this->getIndex(),
             'type' => $this->getType(),
             'id' => $data->getId(),
-            'body' => $data->toArray()
+            'body' => $data->toArray(),
         ]);
     }
 

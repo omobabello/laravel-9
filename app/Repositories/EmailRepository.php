@@ -11,8 +11,6 @@ use Illuminate\Support\Arr;
 
 class EmailRepository implements EmailRepositoryInterface
 {
-
-
     public function sendEmail(User $user, EmailData $email)
     {
         SendEmailJob::dispatch($user, $email);

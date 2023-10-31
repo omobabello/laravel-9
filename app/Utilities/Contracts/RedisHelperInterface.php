@@ -4,9 +4,9 @@ namespace App\Utilities\Contracts;
 
 use App\Data\EmailData;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
-interface RedisHelperInterface {
+interface RedisHelperInterface
+{
     /**
      * Store the id of a message along with a message subject in Redis.
      *

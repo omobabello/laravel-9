@@ -30,7 +30,6 @@ final class EmailData
         return $this->id;
     }
 
-
     /**
      * @return string
      */
@@ -43,9 +42,10 @@ final class EmailData
      * @param string $emailAddress
      * @return EmailData
      */
-    public function setEmailAddress(string $emailAddress): EmailData
+    public function setEmailAddress(string $emailAddress): self
     {
         $this->emailAddress = $emailAddress;
+
         return $this;
     }
 
@@ -61,9 +61,10 @@ final class EmailData
      * @param string $body
      * @return EmailData
      */
-    public function setBody(string $body): EmailData
+    public function setBody(string $body): self
     {
         $this->body = $body;
+
         return $this;
     }
 
@@ -79,9 +80,10 @@ final class EmailData
      * @param string $subject
      * @return EmailData
      */
-    public function setSubject(string $subject): EmailData
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -97,9 +99,10 @@ final class EmailData
      * @param string $sender_name
      * @return EmailData
      */
-    public function setSenderName(string $sender_name): EmailData
+    public function setSenderName(string $sender_name): self
     {
         $this->sender_name = $sender_name;
+
         return $this;
     }
 
@@ -115,9 +118,10 @@ final class EmailData
      * @param string $sender_id
      * @return EmailData
      */
-    public function setSenderId(string $sender_id): EmailData
+    public function setSenderId(string $sender_id): self
     {
         $this->sender_id = $sender_id;
+
         return $this;
     }
 
@@ -128,6 +132,4 @@ final class EmailData
     {
         return $this->created_at;
     }
-
-
 }

@@ -13,7 +13,7 @@ class SendEmailRequest extends FormRequest
             'emails' => 'required|array|min:1',
             'emails.*.subject' => 'required|string|min:3',
             'emails.*.body' => 'required|string|min:10',
-            'emails.*.email' => 'required|email'
+            'emails.*.email' => 'required|email',
         ];
     }
 
@@ -22,15 +22,15 @@ class SendEmailRequest extends FormRequest
         $user = $this->route('user');
 
         $emails = collect($this->input('emails', []));
-        $emails->transform(function($email) use ($user) {
-           $emailData =  new EmailData();
-           $emailData->setEmailAddress($email['email'])
-               ->setSubject($email['subject'])
-               ->setBody($email['body'])
-               ->setSenderId($user->id)
-               ->setSenderName($user->name);
+        $emails->transform(function ($email) use ($user) {
+            $emailData = new EmailData();
+            $emailData->setEmailAddress($email['email'])
+                ->setSubject($email['subject'])
+                ->setBody($email['body'])
+                ->setSenderId($user->id)
+                ->setSenderName($user->name);
 
-           return $emailData;
+            return $emailData;
         });
 
         return $emails;
