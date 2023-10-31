@@ -38,9 +38,9 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle(ElasticsearchHelperInterface $elasticsearchHelper, RedisHelperInterface $redisHelper)
     {
-        Mail::to($this->email->getEmailAddress())->send(new CustomMail($this->email));
+        Mail::to($this->email->getEmailAddress())->queue(new CustomMail($this->email));
 
-        $elasticsearchHelper->storeEmail($this->user, $this->email);
+        $elasticsearchHelper->storeEmail($this->email);
 
         $redisHelper->storeRecentMessage($this->user, $this->email);
     }

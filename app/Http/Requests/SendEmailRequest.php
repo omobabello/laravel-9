@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SendEmailRequest extends FormRequest
 {
-
     public function rules()
     {
         return [
@@ -20,12 +19,16 @@ class SendEmailRequest extends FormRequest
 
     public function emails()
     {
+        $user = $this->route('user');
+
         $emails = collect($this->input('emails', []));
-        $emails->transform(function($email){
+        $emails->transform(function($email) use ($user) {
            $emailData =  new EmailData();
            $emailData->setEmailAddress($email['email'])
                ->setSubject($email['subject'])
-               ->setBody($email['body']);
+               ->setBody($email['body'])
+               ->setSenderId($user->id)
+               ->setSenderName($user->name);
 
            return $emailData;
         });

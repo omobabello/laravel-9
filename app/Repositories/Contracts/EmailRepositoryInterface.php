@@ -9,5 +9,5 @@ interface EmailRepositoryInterface
 {
     public function sendEmail(User $user, EmailData $email);
 
-    public function listUserEmails(User $user);
+    public function listEmails();
 }

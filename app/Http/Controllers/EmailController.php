@@ -22,27 +22,16 @@ class EmailController extends Controller
         $emailsToSend = $request->emails();
 
         $emailsToSend->each(function($email) use ($user) {
-            SendEmailJob::dispatch($user, $email);
+            $this->emailRepository->sendEmail($user, $email);
         });
 
         return $this->response(Response::HTTP_ACCEPTED, "{$emailsToSend->count()} email(s) processing");
-
-//        /** @var ElasticsearchHelperInterface $elasticsearchHelper */
-//        $elasticsearchHelper = app()->make(ElasticsearchHelperInterface::class);
-//        // TODO: Create implementation for storeEmail and uncomment the following line
-//        // $elasticsearchHelper->storeEmail(...);
-//
-//        /** @var RedisHelperInterface $redisHelper */
-//        $redisHelper = app()->make(RedisHelperInterface::class);
-//        // TODO: Create implementation for storeRecentMessage and uncomment the following line
-//        // $redisHelper->storeRecentMessage(...);
-//
-//        return 'works fine';
     }
 
-    //  TODO - BONUS: implement list method
-    public function list()
+    public function list(User $user)
     {
-        return 'works fine';
+        $emails = $this->emailRepository->listEmails();
+
+        return $this->response(Response::HTTP_OK, 'Emails retrieved', $emails);
     }
 }

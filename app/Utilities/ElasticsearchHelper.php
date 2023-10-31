@@ -9,32 +9,36 @@ use Elasticsearch\Client;
 
 class ElasticsearchHelper implements ElasticsearchHelperInterface
 {
-    public function __construct(private Client $client){
+    public function __construct(private Client $client)
+    {
 
     }
 
-    public function storeEmail(User $user, EmailData $data): mixed
+    public function storeEmail(EmailData $data): mixed
     {
-       return $this->client->index([
-            'index' => 'emails',
-            'type' => 'array',
+        return $this->client->index([
+            'index' => $this->getIndex(),
+            'type' => $this->getType(),
             'id' => $data->getId(),
-            'body' => [
-                'sender_name' => $user->name,
-                'sender_id' => $user->id,
-                'created_at' => now()->format('Y-m-d H:i:s'),
-                ...$data->toArray(),
-            ]
-       ]);
+            'body' => $data->toArray()
+        ]);
     }
 
     public function get()
     {
-        return $this->client->get();
+        return $this->client->search([
+            'index' => $this->getIndex(),
+            'type' => $this->getType(),
+        ]);
     }
 
-    public function getUserEmails(User $user)
+    public function getIndex(): string
     {
-        // TODO: Implement getUserEmails() method.
+        return 'emails';
+    }
+
+    public function getType(): string
+    {
+        return 'array';
     }
 }
