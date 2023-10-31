@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Jobs\MotivateUser;
@@ -52,6 +54,15 @@ class User extends Authenticatable
      */
     protected $casts = [];
 
+    protected static function booted()
+    {
+        parent::booted();
+        static::creating(function(self $model){
+            // dummy representation of API tokens
+            $model->api_token = md5($model->id);
+        });
+    }
+
     /**
      * Motivate the user
      *
@@ -62,11 +73,18 @@ class User extends Authenticatable
         MotivateUser::dispatchNow($this);
     }
 
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => Hash::make($value)
+        );
+    }
+
     /**
      * Create a greeting that we can display to the user.
      *
-     * @param  bool  $smallTalk
-     * @param  string  $salutation
+     * @param bool $smallTalk
+     * @param string $salutation
      * @return string
      */
     public function getGreeting(bool $smallTalk = true, string $salutation): string
