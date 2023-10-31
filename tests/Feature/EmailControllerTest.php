@@ -72,8 +72,8 @@ class EmailControllerTest extends TestCase
             'emails' => [
                 [
                     'email' => fake()->safeEmail(),
-                    'body' => $body = 'The quick brown lazy fox is here',
-                    'subject' => $subject = fake()->sentence(),
+                    'body' => 'The quick brown lazy fox is here',
+                    'subject' => fake()->sentence(),
                 ],
             ],
         ]);
