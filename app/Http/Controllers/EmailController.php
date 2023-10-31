@@ -32,6 +32,6 @@ class EmailController extends Controller
     {
         $emails = $this->emailRepository->listEmails();
 
-        return $this->response(Response::HTTP_OK, 'Emails retrieved', $emails);
+        return $this->response(Response::HTTP_OK, 'Emails Retrieved', $emails);
     }
 }
