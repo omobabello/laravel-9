@@ -3,28 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SendEmailRequest;
+use App\Jobs\SendEmailJob;
 use App\Models\User;
+use App\Repositories\Contracts\EmailRepositoryInterface;
 use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use App\Utilities\Contracts\RedisHelperInterface;
+use Illuminate\Http\Response;
 
 class EmailController extends Controller
 {
-    // TODO: finish implementing send method
-    public function send(User $user, SendEmailRequest $request)
+    public function __construct(private EmailRepositoryInterface $emailRepository)
     {
 
+    }
 
-        /** @var ElasticsearchHelperInterface $elasticsearchHelper */
-        $elasticsearchHelper = app()->make(ElasticsearchHelperInterface::class);
-        // TODO: Create implementation for storeEmail and uncomment the following line
-        // $elasticsearchHelper->storeEmail(...);
+    public function send(User $user, SendEmailRequest $request)
+    {
+        $emailsToSend = $request->emails();
 
-        /** @var RedisHelperInterface $redisHelper */
-        $redisHelper = app()->make(RedisHelperInterface::class);
-        // TODO: Create implementation for storeRecentMessage and uncomment the following line
-        // $redisHelper->storeRecentMessage(...);
+        $emailsToSend->each(function($email) use ($user) {
+            SendEmailJob::dispatch($user, $email);
+        });
 
-        return 'works fine';
+        return $this->response(Response::HTTP_ACCEPTED, "{$emailsToSend->count()} email(s) processing");
+
+//        /** @var ElasticsearchHelperInterface $elasticsearchHelper */
+//        $elasticsearchHelper = app()->make(ElasticsearchHelperInterface::class);
+//        // TODO: Create implementation for storeEmail and uncomment the following line
+//        // $elasticsearchHelper->storeEmail(...);
+//
+//        /** @var RedisHelperInterface $redisHelper */
+//        $redisHelper = app()->make(RedisHelperInterface::class);
+//        // TODO: Create implementation for storeRecentMessage and uncomment the following line
+//        // $redisHelper->storeRecentMessage(...);
+//
+//        return 'works fine';
     }
 
     //  TODO - BONUS: implement list method

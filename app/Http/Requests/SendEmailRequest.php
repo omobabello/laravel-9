@@ -2,29 +2,34 @@
 
 namespace App\Http\Requests;
 
+use App\Data\EmailData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SendEmailRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
-            //
+            'emails' => 'required|array|min:1',
+            'emails.*.subject' => 'required|string|min:3',
+            'emails.*.body' => 'required|string|min:10',
+            'emails.*.email' => 'required|email'
         ];
+    }
+
+    public function emails()
+    {
+        $emails = collect($this->input('emails', []));
+        $emails->transform(function($email){
+           $emailData =  new EmailData();
+           $emailData->setEmailAddress($email['email'])
+               ->setSubject($email['subject'])
+               ->setBody($email['body']);
+
+           return $emailData;
+        });
+
+        return $emails;
     }
 }
